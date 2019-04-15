@@ -1,11 +1,27 @@
 # -*- coding: UTF-8 -*-
 __author__ = 'zy'
-__time__ = '2019/4/9 16:50'
+__time__ = '2019/4/15 16:50'
 from time import time
 from sklearn.datasets import load_files
 print('加载数据')
 t=time()
-from new_file import get_json_list
+import json
+def get_json_list():
+    comments=[]
+    with open('seg.json','r+',encoding='utf-8') as f:
+        one=f.readlines()
+
+    for i in one:
+        i=json.loads(i)
+        #print(i)
+        try:
+            comments.append(i['segmentation'])
+        except KeyError:
+            print('分词为空')
+    print(len(comments))
+    #总共8708个
+    print(comments[1:20])
+    return comments
 from sklearn.feature_extraction.text import CountVectorizer
 
 #语料
@@ -48,6 +64,7 @@ print("kmean: k={}, cost={}".format(num_clusters, int(kmean.inertia_)))
 print("done in {0} seconds".format(time() - t))
 
 #km_cluster = KMeans(n_clusters=num_clusters, max_iter=300, n_init=40, init='k-means++',n_jobs=-1)
+#两种不同的调用方法
 '''
 n_clusters: 指定K的值
 max_iter: 对于单次初始值计算的最大迭代次数
